@@ -7,7 +7,10 @@ import {
   Button,
   FormLabel,
   Alert,
+  Spinner,
 } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { userRegister } from './userAction';
 
 const initialState = {
   fname: '',
@@ -22,9 +25,13 @@ const initialState = {
 };
 
 const Register = () => {
+  const dispatch = useDispatch();
   const [user, setUser] = useState(initialState);
   const [passwordError, setPasswordError] = useState('');
 
+  const { isPending, userRegisterResponse } = useSelector(
+    (state) => state.user
+  );
   const handleOnChange = (e) => {
     //set input value in the state
     const { name, value } = e.target;
@@ -44,16 +51,32 @@ const Register = () => {
 
     // check for the password confirmation
 
-    const { password, confirmPassword } = user;
-    password !== confirmPassword && setPasswordError('Password did not match!');
+    const { confirmPassword, ...newUser } = user;
+
+    const { password } = user;
+    if (password !== confirmPassword) {
+      setPasswordError('Password did not match!');
+      return;
+    }
+
+    dispatch(userRegister(newUser));
   };
-  console.log(user);
 
   return (
     <div className="register-page mb-5">
       <Card className="p-3 reg-form">
         <h2>User Registration</h2>
         <hr />
+        {isPending && <Spinner variant="primary" animation="border" />}
+        {userRegisterResponse?.message && (
+          <Alert
+            variant={
+              userRegisterResponse?.status === 'success' ? 'success' : 'danger'
+            }
+          >
+            {userRegisterResponse?.message}
+          </Alert>
+        )}
         <Form onSubmit={handleOnSubmit} className="mt-3">
           <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
             <Form.Label>First Name *</Form.Label>
@@ -89,6 +112,7 @@ const Register = () => {
               onChange={handleOnChange}
               name="password"
               type="password"
+              minLength="8"
               placeholder="Secret"
               required
             />
