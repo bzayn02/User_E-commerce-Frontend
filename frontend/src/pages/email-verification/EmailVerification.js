@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Alert, Spinner } from 'react-bootstrap';
-import { userEmailVerification } from '../register/userAction';
+import { userEmailVerification } from '../user-auth-slice/userAction';
 
 export const EmailVerification = () => {
   const dispatch = useDispatch();
@@ -17,7 +17,7 @@ export const EmailVerification = () => {
   useEffect(() => {
     // send pin and email to api server
     dispatch(userEmailVerification({ pin, email }));
-  }, []);
+  }, [dispatch, pin, email]);
 
   return (
     <div className="m-auto py-5" style={{ width: '500px' }}>

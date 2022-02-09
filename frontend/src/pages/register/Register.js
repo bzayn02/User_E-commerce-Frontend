@@ -10,7 +10,7 @@ import {
   Spinner,
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { userRegister } from './userAction';
+import { userRegister } from '../user-auth-slice/userAction';
 
 const initialState = {
   fname: '',
