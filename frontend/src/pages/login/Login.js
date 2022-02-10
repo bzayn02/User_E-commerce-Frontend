@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, Form, Button, Spinner, Alert } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { userLogin } from '../user-auth-slice/userAction';
 const Login = () => {
-  const navigate = useNavigate();
+  const history = useHistory();
   const dispatch = useDispatch();
   const { isLoggedIn, isPending, userLoginResponse } = useSelector(
     (state) => state.user
@@ -17,8 +17,8 @@ const Login = () => {
   const [loginInfo, setLoginInfo] = useState(initialState);
 
   useEffect(() => {
-    isLoggedIn && navigate('/dashboard');
-  }, [isLoggedIn, navigate]);
+    isLoggedIn && history.push('/dashboard');
+  }, [isLoggedIn, history]);
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
