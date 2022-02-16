@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, Form, Button, Spinner, Alert } from 'react-bootstrap';
-import { useHistory } from 'react-router-dom';
-import { userLogin } from '../user-auth-slice/userAction';
+import { useHistory, useLocation } from 'react-router-dom';
+import { autoLogin, userLogin } from '../user-auth-slice/userAction';
 const Login = () => {
   const history = useHistory();
+  const location = useLocation();
   const dispatch = useDispatch();
   const { isLoggedIn, isPending, userLoginResponse } = useSelector(
     (state) => state.user
@@ -16,9 +17,13 @@ const Login = () => {
   };
   const [loginInfo, setLoginInfo] = useState(initialState);
 
+  const from = location?.state?.from?.pathname || '/dashboard';
+
   useEffect(() => {
-    isLoggedIn && history.push('/dashboard');
-  }, [isLoggedIn, history]);
+    !isLoggedIn && dispatch(autoLogin());
+
+    isLoggedIn && history.replace(from);
+  }, [isLoggedIn, dispatch, history, from]);
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;

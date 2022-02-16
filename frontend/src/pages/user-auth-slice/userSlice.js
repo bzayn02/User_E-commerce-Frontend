@@ -25,9 +25,16 @@ const userSlice = createSlice({
       state.userLoginResponse = {};
       state.isPending = false;
     },
+    loginAuto: (state) => {
+      state.isLoggedIn = true;
+    },
     loginFail: (state, { payload }) => {
       state.isPending = false;
       state.userLoginResponse = payload || {};
+    },
+    userLogoutSuccess: (state) => {
+      state.userInfo = {};
+      state.isLoggedIn = false;
     },
     requestFail: (state, { payload }) => {
       state.isPending = false;
@@ -43,6 +50,8 @@ export const {
   responseSuccess,
   requestFail,
   loginFail,
+  loginAuto,
+  userLogoutSuccess,
   loginSuccess,
 } = actions;
 export default reducer;

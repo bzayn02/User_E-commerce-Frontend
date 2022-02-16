@@ -1,5 +1,6 @@
 import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
+import './footer.css';
 
 const categories = [
   'Mobile',
@@ -13,7 +14,7 @@ const categories = [
 
 export const Footer = () => {
   return (
-    <div>
+    <div className="footer-text bg-secondary">
       <hr />
       <Container>
         {' '}
@@ -21,7 +22,7 @@ export const Footer = () => {
           <Col md="4">
             {' '}
             <div>
-              <span>Quick links</span>
+              <span>Categories</span>
               <ul>
                 {categories.map((category, i) => (
                   <li>{category}</li>
@@ -33,7 +34,7 @@ export const Footer = () => {
             {' '}
             <div>
               <span>Quick links</span>
-              <ul>
+              <ul className="type-none">
                 {categories.map((category, i) => (
                   <li>{category}</li>
                 ))}

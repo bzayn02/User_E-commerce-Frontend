@@ -4,8 +4,11 @@ import {
   loginSuccess,
   requestFail,
   loginFail,
+  userLogoutSuccess,
+  loginAuto,
 } from './userSlice';
 import { createUser, verifyNewUser, loginUser } from '../../api/userAPI';
+import { getNewAccessJWT } from '../../api/tokenAPI';
 export const userRegister = (newUser) => async (dispatch) => {
   dispatch(requestPending());
 
@@ -44,4 +47,30 @@ export const userLogin = (loginInfo) => async (dispatch) => {
   }
 
   dispatch(loginFail(result));
+};
+
+export const autoLogin = () => async (dispatch) => {
+  const accessJWT = window.sessionStorage.getItem('accessJWT');
+  const refreshJWT = window.localStorage.getItem('refreshJWT');
+  // 1. Access JWT exists
+  if (accessJWT) {
+    return dispatch(loginAuto());
+  }
+  // 2. Access JWT doesn't exist but refreshJWT does
+
+  if (!accessJWT && refreshJWT) {
+    // Call api to get access token
+    const result = await getNewAccessJWT();
+    if (result?.accessJWT) {
+      window.sessionStorage.setItem('accessJWT', result.accessJWT);
+      return dispatch(loginAuto());
+    }
+    // 3. No JWTs
+    dispatch(userLogout());
+  }
+};
+export const userLogout = () => (dispatch) => {
+  window.sessionStorage.removeItem('accessJWT');
+  window.localStorage.removeItem('refreshJWT');
+  dispatch(userLogoutSuccess());
 };
