@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Container, Nav, Navbar } from 'react-bootstrap';
+import { Container, Nav, Navbar } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useDispatch } from 'react-redux';
 import { userLogout } from '../../pages/user-auth-slice/userAction';
@@ -16,6 +16,10 @@ export const Header = () => {
   ];
 
   const dispatch = useDispatch();
+
+  const handleOnLogout = () => {
+    dispatch(userLogout());
+  };
 
   return (
     <div>
@@ -47,12 +51,7 @@ export const Header = () => {
                 </Nav.Link>
               </LinkContainer>
               <Nav>
-                <Nav.Link
-                  className="text-white"
-                  onClick={() => {
-                    dispatch(userLogout());
-                  }}
-                >
+                <Nav.Link className="text-white" onClick={handleOnLogout}>
                   <i class="fa-solid fa-right-from-bracket"></i>
                 </Nav.Link>
               </Nav>

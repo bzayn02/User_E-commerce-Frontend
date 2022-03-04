@@ -8,7 +8,12 @@ import {
   userLogoutSuccess,
   loginAuto,
 } from './userSlice';
-import { createUser, verifyNewUser, loginUser } from '../../api/userAPI';
+import {
+  createUser,
+  verifyNewUser,
+  loginUser,
+  logoutUser,
+} from '../../api/userAPI';
 import { getNewAccessJWT } from '../../api/tokenAPI';
 export const userRegister = (newUser) => async (dispatch) => {
   dispatch(requestPending());
@@ -71,7 +76,10 @@ export const autoLogin = () => async (dispatch) => {
   }
 };
 
-export const userLogout = () => (dispatch) => {
+export const userLogout = () => async (dispatch) => {
+  const accessJWT = window.sessionStorage.getItem('accessJWT');
+  const refreshJWT = window.localStorage.getItem('refreshJWT');
+  await logoutUser({ accessJWT, refreshJWT });
   window.sessionStorage.removeItem('accessJWT');
   window.localStorage.removeItem('refreshJWT');
   dispatch(userLogoutSuccess());

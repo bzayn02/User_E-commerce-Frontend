@@ -42,3 +42,15 @@ export const loginUser = async (info) => {
     };
   }
 };
+export const logoutUser = async (tokens) => {
+  try {
+    const { data } = await axios.post(userApi + '/logout', tokens);
+    return data;
+  } catch (error) {
+    console.log(error);
+    return {
+      status: 'error',
+      message: 'Error, unable to process your request. Please try again later.',
+    };
+  }
+};
