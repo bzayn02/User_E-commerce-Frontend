@@ -4,6 +4,7 @@ import {
   loginSuccess,
   requestFail,
   loginFail,
+  autoLoginPending,
   userLogoutSuccess,
   loginAuto,
 } from './userSlice';
@@ -50,6 +51,7 @@ export const userLogin = (loginInfo) => async (dispatch) => {
 };
 
 export const autoLogin = () => async (dispatch) => {
+  dispatch(autoLoginPending(true));
   const accessJWT = window.sessionStorage.getItem('accessJWT');
   const refreshJWT = window.localStorage.getItem('refreshJWT');
   // 1. Access JWT exists
@@ -57,7 +59,6 @@ export const autoLogin = () => async (dispatch) => {
     return dispatch(loginAuto());
   }
   // 2. Access JWT doesn't exist but refreshJWT does
-
   if (!accessJWT && refreshJWT) {
     // Call api to get access token
     const result = await getNewAccessJWT();
@@ -69,6 +70,7 @@ export const autoLogin = () => async (dispatch) => {
     dispatch(userLogout());
   }
 };
+
 export const userLogout = () => (dispatch) => {
   window.sessionStorage.removeItem('accessJWT');
   window.localStorage.removeItem('refreshJWT');

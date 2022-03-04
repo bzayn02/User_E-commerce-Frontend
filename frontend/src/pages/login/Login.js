@@ -7,9 +7,8 @@ const Login = () => {
   const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
-  const { isLoggedIn, isPending, userLoginResponse } = useSelector(
-    (state) => state.user
-  );
+  const { isLoggedIn, isPending, userLoginResponse, isAutoLoginPending } =
+    useSelector((state) => state.user);
 
   const initialState = {
     email: 'ap@gmail.com',
@@ -34,13 +33,13 @@ const Login = () => {
   };
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    const { email, password } = loginInfo;
 
-    if (!email && !password) {
-      return alert('You must enter both email and password to login.');
-    }
     dispatch(userLogin(loginInfo));
   };
+
+  // if (isAutoLoginPending) {
+  //   return <Spinner variant="primary" animation="border" />;
+  // }
 
   return (
     <div className="register-page mb-5">
