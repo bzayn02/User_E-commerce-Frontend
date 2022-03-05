@@ -40,7 +40,7 @@ export const Header = () => {
                   <i class="fa-solid fa-magnifying-glass"></i>
                 </Nav.Link>
               </LinkContainer>
-              <LinkContainer to="/user">
+              <LinkContainer to="/user-profile">
                 <Nav.Link className="text-white">
                   <i class="fa-solid fa-user"></i>
                 </Nav.Link>

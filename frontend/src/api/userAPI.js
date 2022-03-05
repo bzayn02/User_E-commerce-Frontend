@@ -42,6 +42,19 @@ export const loginUser = async (info) => {
     };
   }
 };
+export const getUser = async () => {
+  try {
+    const { data } = await axios.get(userApi, {
+      headers: {
+        authorization: window.sessionStorage.getItem('accessJWT'),
+      },
+    });
+    return data;
+  } catch (error) {
+    console.log(error);
+    return error?.response?.data;
+  }
+};
 export const logoutUser = async (tokens) => {
   try {
     const { data } = await axios.post(userApi + '/logout', tokens);
@@ -52,5 +65,19 @@ export const logoutUser = async (tokens) => {
       status: 'error',
       message: 'Error, unable to process your request. Please try again later.',
     };
+  }
+};
+
+export const updateUserProfile = async (userInfo) => {
+  try {
+    const { data } = await axios.patch(userApi, userInfo, {
+      headers: {
+        authorization: window.sessionStorage.getItem('accessJWT'),
+      },
+    });
+    return data;
+  } catch (error) {
+    console.log(error);
+    return error?.response?.data;
   }
 };

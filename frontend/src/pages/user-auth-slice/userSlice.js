@@ -6,6 +6,7 @@ const initialState = {
   isPending: false,
   userRegisterResponse: {},
   userLoginResponse: {},
+  userUpdateResponse: {},
   isAutoLoginPending: false,
 };
 
@@ -26,6 +27,10 @@ const userSlice = createSlice({
       state.userLoginResponse = {};
       state.isPending = false;
       state.isAutoLoginPending = false;
+    },
+    profileUpdateSuccess: (state, { payload }) => {
+      state.userUpdateResponse = payload;
+      state.isPending = false;
     },
 
     userLogoutSuccess: (state) => {
@@ -61,5 +66,6 @@ export const {
   userLogoutSuccess,
   autoLoginPending,
   loginSuccess,
+  profileUpdateSuccess,
 } = actions;
 export default reducer;

@@ -6,6 +6,7 @@ import { Dashboard } from './pages/dashboard/Dashboard';
 import { PageNotFound } from './components/page-not-found/404PageNotFound';
 import { EmailVerification } from './pages/email-verification/EmailVerification';
 import { PrivateRoute } from './components/private-route/PrivateRoute';
+import UserProfile from './pages/user-profile/UserProfile';
 function App() {
   return (
     <div>
@@ -13,6 +14,9 @@ function App() {
         <Switch>
           <PrivateRoute path="/dashboard">
             <Dashboard />
+          </PrivateRoute>
+          <PrivateRoute path="/user-profile">
+            <UserProfile />
           </PrivateRoute>
 
           <Route path="/user-registration" children={<Register />} />

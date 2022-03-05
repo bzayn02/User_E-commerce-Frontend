@@ -7,14 +7,18 @@ import {
   autoLoginPending,
   userLogoutSuccess,
   loginAuto,
+  profileUpdateSuccess,
 } from './userSlice';
 import {
   createUser,
   verifyNewUser,
   loginUser,
+  getUser,
   logoutUser,
+  updateUserProfile,
 } from '../../api/userAPI';
-import { getNewAccessJWT } from '../../api/tokenAPI';
+import { getNewAccessJWT, updateNewAccessJWT } from '../../api/tokenAPI';
+
 export const userRegister = (newUser) => async (dispatch) => {
   dispatch(requestPending());
 
@@ -25,6 +29,7 @@ export const userRegister = (newUser) => async (dispatch) => {
     : dispatch(requestFail(result));
   //dispatch response
 };
+
 export const userEmailVerification = (userObj) => async (dispatch) => {
   dispatch(requestPending());
 
@@ -83,4 +88,42 @@ export const userLogout = () => async (dispatch) => {
   window.sessionStorage.removeItem('accessJWT');
   window.localStorage.removeItem('refreshJWT');
   dispatch(userLogoutSuccess());
+};
+
+export const fetchUser = () => async (dispatch) => {
+  dispatch(requestPending());
+  const data = await getUser();
+
+  if (data?.message === 'jwt expired') {
+    // request fo rnew accessJWT
+
+    const token = await updateNewAccessJWT();
+    if (token) {
+      return dispatch(fetchUser());
+    } else {
+      dispatch(userLogout());
+    }
+  }
+  if (data?.user) {
+    return dispatch(loginSuccess(data?.user));
+  }
+  dispatch(requestFail(data));
+};
+
+export const updateProfileUser = (userInfo) => async (dispatch) => {
+  dispatch(requestPending());
+  const data = await updateUserProfile(userInfo);
+
+  if (data?.message === 'jwt expired') {
+    // request fo rnew accessJWT
+
+    const token = await updateNewAccessJWT();
+    if (token) {
+      return dispatch(updateProfileUser(userInfo));
+    } else {
+      dispatch(userLogout());
+    }
+  }
+
+  dispatch(profileUpdateSuccess(data));
 };

@@ -18,3 +18,17 @@ export const getNewAccessJWT = async () => {
     console.log(error);
   }
 };
+
+// for the user unauthorised pages for auto accessJWT restoration
+export const updateNewAccessJWT = async () => {
+  try {
+    window.sessionStorage.removeItem('accessJWT');
+    const { accessJWT } = await getNewAccessJWT();
+    if (accessJWT) {
+      window.sessionStorage.setItem('accessJWT', accessJWT);
+    }
+    return window.sessionStorage.getItem('accessJWT');
+  } catch (error) {
+    return false;
+  }
+};
