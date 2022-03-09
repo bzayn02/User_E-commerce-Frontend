@@ -9,6 +9,7 @@ import {
   loginAuto,
   profileUpdateSuccess,
   passwordUpdateSuccess,
+  resetPasswordResponse,
 } from './userSlice';
 import {
   createUser,
@@ -19,7 +20,11 @@ import {
   updateUserProfile,
   updateUserPassword,
 } from '../../api/userAPI';
-import { getNewAccessJWT, updateNewAccessJWT } from '../../api/tokenAPI';
+import {
+  getNewAccessJWT,
+  updateNewAccessJWT,
+  requestOTP,
+} from '../../api/tokenAPI';
 
 export const userRegister = (newUser) => async (dispatch) => {
   dispatch(requestPending());
@@ -145,4 +150,10 @@ export const updatePasswordUser = (passsInfo) => async (dispatch) => {
   }
 
   dispatch(passwordUpdateSuccess(data));
+};
+export const requestPassResetOTP = (email) => async (dispatch) => {
+  dispatch(requestPending());
+  const data = await requestOTP(email);
+
+  dispatch(resetPasswordResponse(data));
 };

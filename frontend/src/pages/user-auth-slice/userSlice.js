@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { StaticRouter } from 'react-router-dom';
 
 const initialState = {
   userInfo: {},
@@ -9,6 +10,8 @@ const initialState = {
   userUpdateResponse: {},
   passwordUpdateResponse: {},
   isAutoLoginPending: false,
+  showResetPasswordForm: false,
+  resetPasswordResponse: {},
 };
 
 const userSlice = createSlice({
@@ -53,6 +56,15 @@ const userSlice = createSlice({
     autoLoginPending: (state, { payload }) => {
       state.isAutoLoginPending = payload;
     },
+
+    switchLoginResetPassForm: (state) => {
+      state.showResetPasswordForm = !state.showResetPasswordForm;
+    },
+    resetPasswordResponse: (state, { payload }) => {
+      state.isPending = false;
+      state.resetPasswordResponse = payload;
+      state.showResetPasswordForm = payload.status !== 'success';
+    },
     requestFail: (state, { payload }) => {
       state.isPending = false;
       state.userRegisterResponse = payload || {};
@@ -73,5 +85,7 @@ export const {
   loginSuccess,
   profileUpdateSuccess,
   passwordUpdateSuccess,
+  resetPasswordResponse,
+  switchLoginResetPassForm,
 } = actions;
 export default reducer;
